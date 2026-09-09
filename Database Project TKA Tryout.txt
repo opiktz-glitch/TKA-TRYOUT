@@ -1,0 +1,220 @@
+Database Project TKA Tryout
+
+DatabaseName : project_tz.db
+SQLite
+
+Table 
+
+1. t_user
+
+id (INTEGER, Primary Key, Auto-increment)
+
+username (TEXT / VARCHAR, Unique, Not Null)
+
+password_hash (TEXT / VARCHAR, Not Null)
+
+full_name (TEXT / VARCHAR, Nullable)
+
+role (TEXT / VARCHAR, Not Null, Default: 'SISWA')
+
+is_active (INTEGER / BOOLEAN, Not Null, Default: 1)
+
+created_at (DATETIME, Default: CURRENT_TIMESTAMP)
+
+
+2. t_student
+
+id (INTEGER, Primary Key)
+
+user_id (INTEGER, Foreign Key ke t_user.id, Unique, Not Null)
+
+student_code (VARCHAR, Unique, Not Null)
+
+full_name (VARCHAR, Not Null)
+
+school_name (VARCHAR, Nullable)
+
+grade (VARCHAR, Nullable)
+
+class_name (VARCHAR, Nullable)
+
+created_at (DATETIME)
+
+
+3. t_teacher
+
+id (INTEGER, Primary Key)
+
+user_id (INTEGER, Foreign Key ke t_user.id, Unique, Not Null)
+
+teacher_code (VARCHAR, Unique, Not Null)
+
+full_name (VARCHAR, Not Null)
+
+school_name (VARCHAR, Nullable)
+
+created_at (DATETIME)
+
+
+4. t_subject
+
+id (INTEGER, Primary Key)
+
+code (VARCHAR, Unique, Not Null)
+
+name (VARCHAR, Not Null)
+
+description (VARCHAR, Nullable)
+
+is_active (BOOLEAN)
+
+created_at (DATETIME)
+
+
+5. t_question
+
+id (INTEGER, Primary Key)
+
+subject_id (INTEGER, Foreign Key ke t_subject.id, Not Null)
+
+question_text (TEXT, Not Null)
+
+question_type (VARCHAR, Not Null)
+
+difficulty (VARCHAR, Not Null)
+
+correct_answer (VARCHAR, Nullable)
+
+explanation (TEXT, Nullable)
+
+points (FLOAT)
+
+is_active (BOOLEAN)
+
+created_by (INTEGER, Foreign Key ke t_user.id, Nullable)
+
+created_at (DATETIME)
+
+
+6. t_question_option
+
+id (INTEGER, Primary Key)
+
+question_id (INTEGER, Foreign Key ke t_question.id, Not Null)
+
+option_code (VARCHAR, Not Null)
+
+option_text (TEXT, Not Null)
+
+is_correct (BOOLEAN)
+
+(Constraint: Unique pada gabungan question_id dan option_code)
+
+
+7. t_tryout
+
+id (INTEGER, Primary Key)
+
+title (VARCHAR, Not Null)
+
+description (TEXT, Nullable)
+
+subject_id (INTEGER, Foreign Key ke t_subject.id, Not Null)
+
+grade (VARCHAR, Nullable)
+
+duration_minutes (INTEGER, Not Null)
+
+total_questions (INTEGER, Nullable)
+
+max_score (FLOAT, Nullable)
+
+difficulty (VARCHAR, Nullable)
+
+created_by (INTEGER, Foreign Key ke t_user.id, Not Null)
+
+is_active (BOOLEAN)
+
+created_at (DATETIME)
+
+
+8. t_tryout_question
+
+id (INTEGER, Primary Key)
+
+tryout_id (INTEGER, Foreign Key ke t_tryout.id, Not Null)
+
+question_id (INTEGER, Foreign Key ke t_question.id, Not Null)
+
+question_number (INTEGER, Not Null)
+
+points (FLOAT)
+
+(Constraint: Unique pada gabungan tryout_id & question_id, serta tryout_id & question_number)
+
+
+9. t_attempt
+
+id (INTEGER, Primary Key)
+
+student_id (INTEGER, Foreign Key ke t_student.id, Not Null)
+
+tryout_id (INTEGER, Foreign Key ke t_tryout.id, Not Null)
+
+started_at (DATETIME, Not Null)
+
+finished_at (DATETIME, Nullable)
+
+status (VARCHAR, Nullable)
+
+score (FLOAT, Nullable)
+
+correct_count (INTEGER, Nullable)
+
+wrong_count (INTEGER, Nullable)
+
+unanswered_count (INTEGER, Nullable)
+
+created_at (DATETIME)
+
+
+10. t_answer
+
+id (INTEGER, Primary Key)
+
+attempt_id (INTEGER, Foreign Key ke t_attempt.id, Not Null)
+
+question_id (INTEGER, Foreign Key ke t_question.id, Not Null)
+
+selected_option (VARCHAR, Nullable)
+
+is_correct (BOOLEAN, Nullable)
+
+points_earned (FLOAT, Nullable)
+
+answered_at (DATETIME, Nullable)
+
+(Constraint: Unique pada gabungan attempt_id dan question_id)
+
+
+11. t_result
+
+id (INTEGER, Primary Key)
+
+attempt_id (INTEGER, Foreign Key ke t_attempt.id, Unique, Not Null)
+
+total_questions (INTEGER, Not Null)
+
+correct_count (INTEGER, Nullable)
+
+wrong_count (INTEGER, Nullable)
+
+unanswered_count (INTEGER, Nullable)
+
+score (FLOAT, Nullable)
+
+percentage (FLOAT, Nullable)
+
+passed (BOOLEAN, Nullable)
+
+completed_at (DATETIME, Nullable)
