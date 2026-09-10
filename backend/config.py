@@ -10,17 +10,17 @@ load_dotenv()
 # ==========================================
 # PATH DATABASE
 # ==========================================
-# BASE_DIR = folder project (C:\Projects\login), yaitu satu
-# tingkat di atas folder backend/ ini berada. Dari BASE_DIR,
-# kita turun ke folder "database" yang sejajar dengan
-# backend/ dan frontend/.
+# BASE_DIR = folder backend/ ini sendiri (tempat config.py
+# berada). Folder "database" sekarang ada DI DALAM backend/,
+# bukan lagi sejajar dengan backend/ dan frontend/.
 #
 #   login/
-#   ├── backend/   <- config.py ada di sini
-#   ├── database/  <- file .db dipindahkan ke sini
+#   ├── backend/
+#   │   ├── config.py      <- file ini
+#   │   └── database/      <- file .db dipindahkan ke sini
 #   └── frontend/
 #
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent
 DATABASE_DIR = BASE_DIR / "database"
 
 # Pastikan foldernya ada (aman dipanggil berkali-kali)
@@ -30,7 +30,8 @@ DEFAULT_DATABASE_PATH = DATABASE_DIR / "project_tz.db"
 
 # Kalau DATABASE_URL diisi manual di file .env, nilai itu
 # yang dipakai. Kalau tidak diisi (atau dihapus dari .env),
-# otomatis fallback ke lokasi database/project_tz.db di atas.
+# otomatis fallback ke lokasi backend/database/project_tz.db
+# di atas.
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
     f"sqlite:///{DEFAULT_DATABASE_PATH}"
