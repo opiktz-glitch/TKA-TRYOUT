@@ -77,7 +77,7 @@ async function apiFetch(
     }
   }
 
-  const response = await fetch(`${API_URL}${path}`, {
+  const response = await fetch(`${API_BASE_URL}${path}`, {
     method,
     headers,
     body: body !== undefined ? JSON.stringify(body) : undefined,
